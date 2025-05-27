@@ -1,1 +1,14 @@
-{}
+{
+  "dilara": {
+    "total_choices": {
+      "americano": 3,
+      "latte": 2
+    },
+    "last_choice": "latte",
+    "history": [
+      {"coffee": "americano", "time": 9},
+      {"coffee": "latte", "time": 15},
+      {"coffee": "ice-latte", "time": 18}
+    ]
+  }
+}

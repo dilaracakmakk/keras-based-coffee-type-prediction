@@ -13,19 +13,29 @@ def save_profiles(data):
     with open(FILE_PATH,"w", encoding="utf-8") as f:
         json.dump(data,f,indent=4, ensure_ascii=False)
 
+def update_user_profile(username, coffee, time=None):
+    profiles = load_profiles()
 
-def update_user_profile(username, preference ):
-    profiles=load_profiles()
     if username not in profiles:
         profiles[username] = {
-            "all_preference":{},
-            "end_preference": preference
+            "total_choices": {},
+            "last_choice": coffee,
+            "history": []
         }
-    preferences=profiles[username] ["all_preference"]
-    preferences[preference]=preferences.get(preference,0)+1
-    profiles[username]["end_preference"]=preference
+
+    tercih_sayilari = profiles[username]["total_choices"]
+    tercih_sayilari[coffee] = tercih_sayilari.get(coffee, 0) + 1
+    profiles[username]["last_choice"] = coffee
+
+    if time is not None:
+        profiles[username]["history"].append({
+            "coffee": coffee,
+            "time": time
+        })
+
+    save_profiles(profiles)
+
 
 def get_user_profile(username):
     profiles=load_profiles()
     return profiles.get(username, None)
-
