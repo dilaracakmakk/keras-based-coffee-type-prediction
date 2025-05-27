@@ -66,7 +66,7 @@ def öner():
 
         prediction = model.predict(df)
         predicted_label = y_labels[prediction.argmax()]
-        messagebox.showinfo("Recommended Coffee", f"☕ {predicted_label}")
+        messagebox.showinfo("Recommended Coffee", f" {predicted_label}")
 
         update_user_profile(username, predicted_label)
         profile = get_user_profile(username)
