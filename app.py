@@ -27,11 +27,15 @@ mood_cb = ttk.Combobox(root, values=["tired", "normal", "energetic", "relaxed"])
 mood_cb.pack(pady=5)
 
 tk.Label(root, text="Weather").pack()
-weather_cb = ttk.Combobox(root, values=["cold", "hot", "sunny"])
+weather_cb = ttk.Combobox(root, values=["cold", "hot", "sunny", "rainy", "snowy"])
 weather_cb.pack(pady=5)
 
 tk.Label(root, text="Previous Choice").pack()
-prev_cb = ttk.Combobox(root, values=["filter-coffee", "ice-latte", "cappucino", "espresso", "mocha"])
+prev_cb = ttk.Combobox(root, values=[
+    "filter-coffee", "ice-latte", "cappucino", "espresso", "mocha", 
+    "ice-flat-white", "caramel-frappucino", "frappe", "ice-matcha-latte",
+    "hot-chocolate", "chai-tea-latte"
+])
 prev_cb.pack(pady=5)
 
 tk.Label(root, text="Sugar Choice").pack()
@@ -45,9 +49,10 @@ milk_cb.pack(pady=5)
 def öner():
     try:
         username = username_entry.get()
-        time = int(time_entry.get())
+        time_val = int(time_entry.get())
+
         sample = {
-            "time": time,
+            "time": time_val,
             "mood": mood_cb.get(),
             "weather_status": weather_cb.get(),
             "previous_choice": prev_cb.get(),
@@ -64,18 +69,38 @@ def öner():
         df = df[X_columns]
         df = df.astype("float32")
 
+        print("\n--- DEBUG ---")
+        print("Input DataFrame to Model:\n", df)
+        print("X_columns uyumu:", list(df.columns) == X_columns)
+        
         prediction = model.predict(df)
+        print("Raw prediction output:\n", prediction)
+        top_indices = prediction[0].argsort()[::-1][:3] 
+        top_labels = [y_labels[i] for i in top_indices]
+        top_probs = [prediction[0][i] for i in top_indices]
+
+        top_3_text = "Top 3 Suggestions:\n"
+        for lbl, prob in zip(top_labels, top_probs):
+            top_3_text += f"{lbl}: {prob:.2%}\n"  
+
+        messagebox.showinfo("Recommended Coffee", top_3_text)
+
+
+        
+
         predicted_label = y_labels[prediction.argmax()]
-        messagebox.showinfo("Recommended Coffee", f" {predicted_label}")
+        print("Predicted label:", predicted_label)
+        print("--- END DEBUG ---\n")
+
+        messagebox.showinfo("Recommended Coffee", f"{predicted_label}")
 
         update_user_profile(username, predicted_label, time_val)
-
         profile = get_user_profile(username)
 
         if profile:
-            last = profile["last_choice"]
-            most = max(profile["total_choices"], key=profile["total_choices"].get)
-            profile_text = f"LaST Coffee: {last}\nMost Drunk: {most}"
+            last = profile.get("last_choice", "N/A")
+            most = max(profile["total_choices"], key=profile["total_choices"].get) if profile["total_choices"] else "N/A"
+            profile_text = f"Last Coffee: {last}\nMost Drunk: {most}"
             profile_label.config(text=profile_text)
 
     except Exception as e:

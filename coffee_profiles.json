@@ -1,14 +1,68 @@
 {
-  "dilara": {
-    "total_choices": {
-      "americano": 3,
-      "latte": 2
+    "dilara": {
+        "total_choices": {
+            "americano": 3,
+            "latte": 2
+        },
+        "last_choice": "latte",
+        "history": [
+            {
+                "coffee": "americano",
+                "time": 9
+            },
+            {
+                "coffee": "latte",
+                "time": 15
+            },
+            {
+                "coffee": "ice-latte",
+                "time": 18
+            }
+        ]
     },
-    "last_choice": "latte",
-    "history": [
-      {"coffee": "americano", "time": 9},
-      {"coffee": "latte", "time": 15},
-      {"coffee": "ice-latte", "time": 18}
-    ]
-  }
+    "sena": {
+        "total_choices": {
+            "flat-white": 1
+        },
+        "last_choice": "flat-white",
+        "history": [
+            {
+                "coffee": "flat-white",
+                "time": "3"
+            }
+        ]
+    },
+    "berk": {
+        "total_choices": {
+            "flat-white": 2,
+            "mocha": 1
+        },
+        "last_choice": "mocha",
+        "history": [
+            {
+                "coffee": "flat-white",
+                "time": "12"
+            },
+            {
+                "coffee": "flat-white",
+                "time": 10
+            },
+            {
+                "coffee": "mocha",
+                "time": 14
+            }
+        ]
+    },
+    "ece": {
+        "total_choices": {
+            "mocha": 1
+        },
+        "last_choice": "mocha",
+        "history": [
+            {
+                "coffee": "mocha",
+                "time": 18
+            }
+        ]
+    }
 }
